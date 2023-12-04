@@ -1,0 +1,4 @@
+weather-api:
+  rate: 300000 # 5 min
+  api-key: "9cffe1be29mshcad1250edea0f1dp100a3cjsn4a82cc5e03f5"
+  location: "Minsk"
