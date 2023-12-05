@@ -7,11 +7,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface WeatherRepository extends JpaRepository<Weather, Long> {
-    @Query("SELECT weather FROM Weather weather WHERE weather.dateTime BETWEEN :from AND :to")
-    List<Weather> findWeatherInDateRange(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
-    Weather findWeatherByLocationAndDateTime(String location, LocalDateTime dateTime);
-    Weather findWeatherByLocation(String location);
-    Weather findWeatherById(Long id);
+    @Query("SELECT weather FROM Weather weather WHERE weather.dateTime BETWEEN :startDate AND :endDate")
+    List<Weather> findWeatherInDateRange(@Param("startDate") LocalDateTime from, @Param("endDate") LocalDateTime to);
+    Optional<Weather> findFirstByLocationOrderByDateTimeDesc(String location);
 }

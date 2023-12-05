@@ -5,11 +5,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @MappedSuperclass
-public class BaseEntity implements Serializable {
+public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

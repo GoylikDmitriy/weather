@@ -1,3 +1,5 @@
+create schema weather;
+
 create table weather.weather
 (
     weather_id           bigserial
@@ -9,7 +11,7 @@ create table weather.weather
     humidity             double precision,
     weather_conditions   varchar,
     location             varchar,
-    date_time            date
+    date_time            timestamp
 );
 
 create unique index weather_weather_id_uindex
