@@ -19,7 +19,7 @@ public class Weather extends BaseEntity {
     private String weatherConditions;
     @Column(name = "location")
     private String location;
-    @Column(name = "date")
+    @Column(name = "date_time")
     private LocalDateTime dateTime;
 
     public Double getTemperature() {

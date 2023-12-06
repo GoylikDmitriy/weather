@@ -1,10 +1,6 @@
-create schema weather;
-
-create table weather.weather
+create table weather
 (
-    weather_id           bigserial
-        constraint weather_pk
-            primary key,
+    id              BIGSERIAL PRIMARY KEY,
     temperature          double precision,
     wind_speed           double precision,
     atmospheric_pressure double precision,
@@ -13,6 +9,3 @@ create table weather.weather
     location             varchar,
     date_time            timestamp
 );
-
-create unique index weather_weather_id_uindex
-    on weather.weather (weather_id);
