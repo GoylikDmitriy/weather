@@ -38,7 +38,9 @@
      "average_temp":"7.4"
    }
 
-4. Для смены локации получения погоды, в файле src/main/resources/application.yml
+3. Для смены локации получения погоды, в файле src/main/resources/application.yml
    нужно поменять значение weather-api.location на нужное.
    Там же задается период, через который будут обновляться данные погоды: weather-api.fixed-rate.
+
+4. Скрипты для создания схемы, а также для инициализация начальными данные в папке: src/main/resources/db/postgres.
    
