@@ -8,7 +8,7 @@ spring:
   datasource:
     url: "${POSTGRES_URL:jdbc:postgresql://localhost/weather}"
     username: "${POSTGRES_USER:postgres}"
-    password: "${POSTGRES_PASS:1234}"
+    password: "${POSTGRES_PASSWORD:1234}"
   jpa:
     hibernate:
       ddl-auto: none
