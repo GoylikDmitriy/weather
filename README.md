@@ -28,16 +28,17 @@
    Пример запроса:
    POST /weather/average-daily-temperature
    {
-     "from":"02-11-2023" // в формате dd-MM-yyyy
+     "from":"02-11-2023",
      "to":"06-11-2023" 
    }
+   обе даты в формате dd-MM-yyyy
 
    Пример ответа:
    {
      "average_temp":"7.4"
    }
 
-3. Для смены локации получения погоды, в файле src/main/resources/application.yml
+4. Для смены локации получения погоды, в файле src/main/resources/application.yml
    нужно поменять значение weather-api.location на нужное.
    Там же задается период, через который будут обновляться данные погоды: weather-api.fixed-rate.
    
