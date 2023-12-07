@@ -42,7 +42,7 @@ public class WeatherControllerTest {
         DateRangeRequest request = new DateRangeRequest();
         request.setFrom("02-11-2023");
         request.setTo("06-11-2023");
-        Double averageTemperature = 22d / 3d;
+        Double averageTemperature = 7.4d;
         when(weatherService.getAverageDailyTemperature(any(LocalDateTime.class), any(LocalDateTime.class)))
                 .thenReturn(averageTemperature);
 

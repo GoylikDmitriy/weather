@@ -1,16 +1,25 @@
 package com.goylik.weather.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class WeatherDto {
     private Long id;
+    @JsonProperty("temp")
     private Double temperature;
+    @JsonProperty("wind_mph")
     private Double windSpeed;
+    @JsonProperty("pressure_mb")
     private Double atmosphericPressure;
+    @JsonProperty("humidity")
     private Double humidity;
+    @JsonProperty("weather_conditions")
     private String weatherConditions;
+    @JsonProperty("location")
     private String location;
+    @JsonProperty("last_updated")
     private LocalDateTime dateTime;
 
     public Long getId() {
