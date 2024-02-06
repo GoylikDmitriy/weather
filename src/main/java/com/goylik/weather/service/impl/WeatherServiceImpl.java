@@ -96,20 +96,14 @@ public class WeatherServiceImpl implements WeatherService {
         }
     }
 
-    public Optional<WeatherDto> getCurrentWeatherBySpecifiedLocation() throws WeatherServiceException {
-        try {
-            logger.info("Trying to get current weather for specified location: {}", location);
-            return this.getCurrentWeatherByLocation(location);
-        }
-        catch (WeatherServiceException e) {
-            logger.error("Error while getting current weather by specified location: {}. Error: {}", location, e.getMessage());
-            throw new WeatherServiceException("Error while getting current weather by specified location.", e);
-        }
+    public WeatherDto getCurrentWeatherBySpecifiedLocation() throws WeatherServiceException {
+        logger.info("Trying to get current weather for specified location: {}", location);
+        return this.getCurrentWeatherByLocation(location);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<WeatherDto> getCurrentWeatherByLocation(String location) throws WeatherServiceException {
+    public WeatherDto getCurrentWeatherByLocation(String location) throws WeatherServiceException {
         try {
             logger.info("Trying to get current weather for location: {}", location);
             Optional<Weather> weatherOptional = this.weatherRepository.findFirstByLocationOrderByDateTimeDesc(location);
@@ -120,7 +114,7 @@ public class WeatherServiceImpl implements WeatherService {
 
             Weather weather = weatherOptional.get();
             logger.info("Retrieved weather for location: {}", location);
-            return Optional.of(this.weatherMapper.map(weather));
+            return this.weatherMapper.map(weather);
         }
         catch (MappingException e) {
             logger.error("Error while getting weather by location: {}. Error: {}", location, e.getMessage());
@@ -150,27 +144,21 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public Double getAverageDailyTemperature(LocalDateTime from, LocalDateTime to) throws WeatherServiceException {
-        try {
-            logger.info("Trying to get average daily temp.");
-            List<WeatherDto> weathers = this.getWeatherInDateRange(from, to);
-            if (weathers.size() == 0) {
-                logger.error("Couldn't find any weather by these dates.");
-                throw new WeatherServiceException("Couldn't find any weather by these dates.");
-            }
-
-            double averageTemperature = 0d;
-            for (WeatherDto weather : weathers) {
-                averageTemperature += weather.getTemperature();
-            }
-
-            averageTemperature /= weathers.size();
-            logger.info("Retrieved average temperature.");
-            return averageTemperature;
+        logger.info("Trying to get average daily temp.");
+        List<WeatherDto> weathers = this.getWeatherInDateRange(from, to);
+        if (weathers.size() == 0) {
+            logger.error("Couldn't find any weather by these dates.");
+            throw new WeatherServiceException("Couldn't find any weather by these dates.");
         }
-        catch (WeatherServiceException e) {
-            logger.error("Error while getting average daily temperature. Error: {}", e.getMessage());
-            throw new WeatherServiceException("Error while getting average daily temperature.", e);
+
+        double averageTemperature = 0d;
+        for (WeatherDto weather : weathers) {
+            averageTemperature += weather.getTemperature();
         }
+
+        averageTemperature /= weathers.size();
+        logger.info("Retrieved average temperature.");
+        return averageTemperature;
     }
 
     @Override

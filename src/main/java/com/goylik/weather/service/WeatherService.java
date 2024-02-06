@@ -17,7 +17,7 @@ public interface WeatherService {
      * @return an Optional containing the current weather as a WeatherDto, or an empty Optional if the weather is not available
      * @throws ServiceException if there are issues retrieving the current weather
      */
-    Optional<WeatherDto> getCurrentWeatherBySpecifiedLocation() throws ServiceException;
+    WeatherDto getCurrentWeatherBySpecifiedLocation() throws ServiceException;
 
     /**
      * Retrieves the current weather for a specific location.
@@ -26,7 +26,7 @@ public interface WeatherService {
      * @return an Optional containing the current weather as a WeatherDto, or an empty Optional if the weather is not available.
      * @throws ServiceException if there are issues retrieving the current weather.
      */
-    Optional<WeatherDto> getCurrentWeatherByLocation(String location) throws ServiceException;
+    WeatherDto getCurrentWeatherByLocation(String location) throws ServiceException;
 
     /**
      * Retrieves the weather data within the specified date range.

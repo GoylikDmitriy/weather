@@ -55,10 +55,8 @@ public class WeatherServiceTest {
         try {
             Long id = this.weatherService.saveWeather(weatherDto);
             weatherDto.setId(id);
-            Optional<WeatherDto> retrievedWeatherOptional = this.weatherService.getCurrentWeatherByLocation("Minsk");
-            assertThat(retrievedWeatherOptional)
-                    .isPresent()
-                    .hasValue(weatherDto);
+            WeatherDto retrievedWeather = this.weatherService.getCurrentWeatherByLocation("Minsk");
+            assertThat(retrievedWeather).isEqualTo(weatherDto);
         }
         catch (ServiceException e) {
             fail("Test failed with ServiceException: " + e.getMessage());

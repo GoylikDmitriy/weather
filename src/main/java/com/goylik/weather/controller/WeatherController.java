@@ -47,13 +47,8 @@ public class WeatherController {
     public ResponseEntity<WeatherDto> getCurrentWeather() throws WeatherBusinessException {
         try {
             logger.info("Trying to get current weather by GET method.");
-            Optional<WeatherDto> weatherDtoOptional = this.weatherService.getCurrentWeatherBySpecifiedLocation();
-            ResponseEntity<WeatherDto> weatherDtoResponse = weatherDtoOptional.map(ResponseEntity::ok)
-                    .orElseThrow(() -> {
-                        logger.error("Can't find weather for specified location.");
-                        return new WeatherBusinessException("Can't find weather for specified location.");
-                    });
-
+            WeatherDto weatherDto = this.weatherService.getCurrentWeatherBySpecifiedLocation();
+            ResponseEntity<WeatherDto> weatherDtoResponse = ResponseEntity.ok(weatherDto);
             logger.info("Retrieved current weather.");
             return weatherDtoResponse;
         }
