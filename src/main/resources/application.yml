@@ -1,14 +1,19 @@
 weather-api:
   fixed-rate: 300000 # 5 min
   initial-delay: 60000 # 1 min
-  api-key: "9cffe1be29mshcad1250edea0f1dp100a3cjsn4a82cc5e03f5"
-  location: "Minsk"
+  api-key: 9cffe1be29mshcad1250edea0f1dp100a3cjsn4a82cc5e03f5
+  location: Minsk
 
 spring:
   datasource:
-    url: "${POSTGRES_URL:jdbc:postgresql://localhost/weather}"
-    username: "${POSTGRES_USER:postgres}"
-    password: "${POSTGRES_PASSWORD:1234}"
+    url: jdbc:postgresql://localhost:5432/weather
+    username: postgres
+    password: 1234
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yml
+    default-schema: public

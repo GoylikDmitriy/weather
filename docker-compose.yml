@@ -1,7 +1,7 @@
 version: '3.1'
 
 services:
-  postgres:
+  postgres-weather:
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -9,3 +9,18 @@ services:
       POSTGRES_DB: weather
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
+      PGDATA: /data/postgres-planner
+    volumes:
+      - ./postgres-weather-data:/data/postgres-weather
+
+  weather-api:
+    build: .
+    restart: always
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres-weather
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-weather:5432/weather
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234

@@ -7,13 +7,12 @@ import com.goylik.weather.model.dto.WeatherDto;
 import com.goylik.weather.model.entity.Weather;
 import com.goylik.weather.model.mapper.WeatherMapper;
 import com.goylik.weather.model.mapper.exception.JsonMappingException;
-import com.goylik.weather.model.mapper.exception.WeatherMappingException;
 import com.goylik.weather.service.impl.WeatherServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * Mapper class that maps between WeatherDto and Weather entities,
@@ -24,11 +23,11 @@ public class WeatherMapperImpl implements WeatherMapper {
     private static final Logger logger = LoggerFactory.getLogger(WeatherServiceImpl.class);
 
     @Override
-    public WeatherDto mapToDtoFromJSON(String weatherJSON) throws JsonMappingException {
+    public WeatherDto mapToDtoFromJSON(String weatherJSON) {
         logger.info("Mapping JSON weather to Dto");
-        if (weatherJSON == null || weatherJSON.isEmpty()) {
-            logger.error("JSON string is null or empty");
-            throw new JsonMappingException("JSON string is null or empty");
+        if (weatherJSON == null) {
+            logger.warn("JSON string is null.");
+            return null;
         }
 
         try {
@@ -43,8 +42,8 @@ public class WeatherMapperImpl implements WeatherMapper {
             Double humidity = jsonNode.get(currentNode).get("humidity").asDouble();
             String weatherConditions = jsonNode.get(currentNode).get("condition").get("text").asText();
             String location = jsonNode.get(locationNode).get("name").asText();
-            String dateTimeString = jsonNode.get(currentNode).get("last_updated").asText();
-            LocalDateTime dateTime = this.parseDateTimeFromJson(dateTimeString);
+            String dateString = jsonNode.get(currentNode).get("last_updated").asText();
+            LocalDate date = this.parseDateFromJson(dateString);
 
             WeatherDto weatherDto = new WeatherDto();
             weatherDto.setTemperature(temperature);
@@ -53,27 +52,24 @@ public class WeatherMapperImpl implements WeatherMapper {
             weatherDto.setHumidity(humidity);
             weatherDto.setWeatherConditions(weatherConditions);
             weatherDto.setLocation(location);
-            weatherDto.setDateTime(dateTime);
+            weatherDto.setLastUpdated(date);
 
             logger.info("Weather JSON was mapped.");
             return weatherDto;
-        }
-        catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             logger.error("Can't map JSON. Error: {}", e.getMessage());
             throw new JsonMappingException("Can't map JSON: " + e.getMessage());
         }
     }
 
-    private LocalDateTime parseDateTimeFromJson(String dateTimeString) {
+    private LocalDate parseDateFromJson(String dateTimeString) {
         logger.info("Parsing date time. DateTime string: {}", dateTimeString);
         int year = Integer.parseInt(dateTimeString.substring(0, 4));
         int month = Integer.parseInt(dateTimeString.substring(5, 7));
         int day = Integer.parseInt(dateTimeString.substring(8, 10));
-        int hour = Integer.parseInt(dateTimeString.substring(11, 13));
-        int minute = Integer.parseInt(dateTimeString.substring(14, 16));
-        LocalDateTime dateTime = LocalDateTime.of(year, month, day, hour, minute);
-        logger.info("Date time was parsed.");
-        return dateTime;
+        LocalDate date = LocalDate.of(year, month, day);
+        logger.info("Date was parsed.");
+        return date;
     }
 
     /**
@@ -81,14 +77,13 @@ public class WeatherMapperImpl implements WeatherMapper {
      *
      * @param weather the Weather entity to be mapped.
      * @return a WeatherDto object mapped from the Weather entity.
-     * @throws WeatherMappingException if there are issues with mapping the Weather entity.
      */
     @Override
-    public WeatherDto map(Weather weather) throws WeatherMappingException {
+    public WeatherDto map(Weather weather) {
         logger.info("Mapping weather entity to dto.");
         if (weather == null) {
-            logger.error("Weather entity is null.");
-            throw new WeatherMappingException("Weather entity is null.");
+            logger.warn("Weather entity is null.");
+            return null;
         }
 
         WeatherDto weatherDto = new WeatherDto();
@@ -99,7 +94,7 @@ public class WeatherMapperImpl implements WeatherMapper {
         weatherDto.setHumidity(weather.getHumidity());
         weatherDto.setWeatherConditions(weather.getWeatherConditions());
         weatherDto.setLocation(weather.getLocation());
-        weatherDto.setDateTime(weather.getDateTime());
+        weatherDto.setLastUpdated(weather.getDate());
         logger.info("Weather entity was mapped to dto.");
         return weatherDto;
     }
@@ -109,14 +104,13 @@ public class WeatherMapperImpl implements WeatherMapper {
      *
      * @param weatherDto the WeatherDto object to be mapped.
      * @return a Weather entity mapped from the WeatherDto object.
-     * @throws WeatherMappingException if there are issues with mapping the WeatherDto object.
      */
     @Override
-    public Weather map(WeatherDto weatherDto) throws WeatherMappingException {
+    public Weather map(WeatherDto weatherDto) {
         logger.info("Mapping weather dto to entity.");
         if (weatherDto == null) {
-            logger.error("Weather dto is null");
-            throw new WeatherMappingException("Weather dto is null.");
+            logger.warn("Weather dto is null");
+            return null;
         }
 
         Weather weather = new Weather();
@@ -127,7 +121,7 @@ public class WeatherMapperImpl implements WeatherMapper {
         weather.setHumidity(weatherDto.getHumidity());
         weather.setWeatherConditions(weatherDto.getWeatherConditions());
         weather.setLocation(weatherDto.getLocation());
-        weather.setDateTime(weatherDto.getDateTime());
+        weather.setDate(weatherDto.getLastUpdated());
         logger.info("Weather dto was mapped.");
         return weather;
     }

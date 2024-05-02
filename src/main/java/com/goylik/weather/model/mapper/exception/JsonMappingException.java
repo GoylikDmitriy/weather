@@ -1,6 +1,6 @@
 package com.goylik.weather.model.mapper.exception;
 
-public class JsonMappingException extends MappingException {
+public class JsonMappingException extends RuntimeException {
     public JsonMappingException() {
     }
 

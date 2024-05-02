@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tasks
+      author: goylik
+      changes:
+        - createTable:
+            tableName: weather
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: temperature
+                  type: double precision
+              - column:
+                  name: wind_speed
+                  type: double precision
+              - column:
+                  name: atmospheric_pressure
+                  type: double precision
+              - column:
+                  name: humidity
+                  type: double precision
+              - column:
+                  name: weather_conditions
+                  type: varchar
+              - column:
+                  name: location
+                  type: varchar
+              - column:
+                  name: date
+                  type: timestamp
