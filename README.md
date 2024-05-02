@@ -21,21 +21,18 @@
   }
 
 2. Получение средней температуры за указанный период.
-   URL: /weather/average-daily-temperature
+   URL: /weather/avg-temp
 
-   Метод POST.
+   Метод GET.
 
    Пример запроса:
-   POST /weather/average-daily-temperature
-   {
-     "from":"02-11-2023",
-     "to":"06-11-2023" 
-   }
+   GET /weather/avg-temp?from=02-11-2023&to=06-11-2023
+
    обе даты в формате dd-MM-yyyy
 
    Пример ответа:
    {
-     "average_temp":"7.4"
+     "avg_temp":"7.4"
    }
 
 3. Для смены локации получения погоды, в файле src/main/resources/application.yml
